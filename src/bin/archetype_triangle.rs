@@ -19,8 +19,7 @@ use glow::HasContext;
 // Shader lookup: beside the crate (downloaded files), else at the
 // notebook repository's shared location.
 fn shader(name: &str) -> String {
-    std::fs::read_to_string(name)
-        .or_else(|_| std::fs::read_to_string(format!("../../shaders/{name}")))
+    std::fs::read_to_string(format!("shaders/{name}"))
         .unwrap()
 }
 
