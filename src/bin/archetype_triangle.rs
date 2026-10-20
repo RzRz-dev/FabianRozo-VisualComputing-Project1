@@ -19,7 +19,13 @@ use glow::HasContext;
 // Shader lookup: beside the crate (downloaded files), else at the
 // notebook repository's shared location.
 fn shader(name: &str) -> String {
-    std::fs::read_to_string(format!("shaders/{name}"))
+    // name is like "archetype_triangle.vert" or "archetype_phong.frag"
+    // The archetype directory name matches the filename without the .vert/.frag extension.
+    // e.g., "archetype_triangle.vert" -> "archetype_triangle" directory + "archetype_triangle.vert" file
+    let base = &name[..name.len() - 5]; // strip ".vert" or ".frag" (5 chars)
+    std::fs::read_to_string(format!("shaders/{base}/{name}"))
+        .or_else(|_| std::fs::read_to_string(format!("shaders/{name}")))
+        .or_else(|_| std::fs::read_to_string(format!("../../shaders/{name}")))
         .unwrap()
 }
 

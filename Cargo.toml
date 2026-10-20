@@ -3,15 +3,12 @@ name = "archetypes"
 version = "0.1.0"
 edition = "2021"
 
-# The thin layer is the crate's lib; each row's program is a binary
-# under src/bin/, so:  cargo run --bin archetype_<row>
 [lib]
 name = "vc"
 path = "src/vc.rs"
 
 [dependencies]
-# 0.62 vendors GLFW 3.4: no ECM build dependency, and both Wayland and
-# X11 backends built with runtime selection -- same behavior as the
-# system GLFW the C++ and Python columns link.
-glfw = "0.62"
+glfw = "0.60"        # use the versions you had before
 glow = "0.13"
+image = "0.25"
+ffmpeg-next = { version = "8", default-features = false, features = ["codec", "format", "software-scaling"] }

@@ -41,7 +41,9 @@ pub fn create_program_info(
             gl.shader_source(sh, src);
             gl.compile_shader(sh);
             if !gl.get_shader_compile_status(sh) {
-                panic!("{}", gl.get_shader_info_log(sh));
+                let log = gl.get_shader_info_log(sh);
+                eprintln!("Shader compile error: {}", log);
+                std::process::exit(1);
             }
             sh
         };
@@ -50,7 +52,9 @@ pub fn create_program_info(
         gl.attach_shader(program, compile(glow::FRAGMENT_SHADER, frag_src));
         gl.link_program(program);
         if !gl.get_program_link_status(program) {
-            panic!("{}", gl.get_program_info_log(program));
+            let log = gl.get_program_info_log(program);
+            eprintln!("Program link error: {}", log);
+            std::process::exit(1);
         }
         let mut uniforms = HashMap::new();
         for i in 0..gl.get_active_uniforms(program) {
